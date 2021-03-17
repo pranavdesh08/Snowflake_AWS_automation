@@ -26,18 +26,17 @@ ftpUsername= ftp_conn['ftpUsername']
 ftpPassword= ftp_conn['ftpPassword']
 
 def main():
-  get_Pre_Trades()
-  upload_blob(bucket_name,lkupfile_pre_trade,lkupfile_pre_trade)
-  file_to_snow('pretrade',lkupfile_pre_trade)
-  aws_pre_trade(lkupfile_pre_trade, aws_date)
+    get_Pre_Trades()
+    upload_blob(bucket_name,lkupfile_pre_trade,lkupfile_pre_trade)
+    file_to_snow('pretrade',lkupfile_pre_trade)
+    aws_pre_trade(lkupfile_pre_trade, aws_date)
   
+    get_Post_Trades()
+    upload_blob(bucket_name,lkupfile_post_trade,lkupfile_post_trade)
+    file_to_snow('post_trade',lkupfile_post_trade)
+    aws_post_trade(lkupfile_post_trade, aws_date)
 
-  get_Post_Trades()
-  upload_blob(bucket_name,lkupfile_post_trade,lkupfile_post_trade)
-  file_to_snow('post_trade',lkupfile_post_trade)
-  aws_post_trade(lkupfile_post_trade, aws_date)
-
-  clean_files()
+    clean_files()
 
 def upload_blob(bucket_name, source_file_name, destination_blob_name):
     """This funtion is used to load the file into specific Google bucket. 
@@ -63,22 +62,22 @@ def get_Pre_Trades():
     cnopts.hostkeys = None
 	# Define the file that you want to download from the remote directory
     print(lkupfile_pre_trade)
-    with pysftp.Connection(host=ftpHost, username=ftpUsername, password=ftpPassword,cnopts=cnopts) as sftp:	
-	    remoteFilePath = "/upload/"+lkupfile_pre_trade
+    with pysftp.Connection(host=ftpHost, username=ftpUsername, password=ftpPassword,cnopts=cnopts) as sftp:
+	remoteFilePath = "/upload/"+lkupfile_pre_trade
     	# Define the local path where the file will be saved
-	    localFilePath = lkupfile_pre_trade
-	    sftp.get(remoteFilePath, localFilePath)
+	localFilePath = lkupfile_pre_trade
+	sftp.get(remoteFilePath, localFilePath)
 
 def get_Post_Trades():
-	cnopts = pysftp.CnOpts()
-	cnopts.hostkeys = None
-	# Define the file that you want to download from the remote directory
-	print(lkupfile_post_trade)
-	with pysftp.Connection(host=ftpHost, username=ftpUsername, password=ftpPassword,cnopts=cnopts) as sftp:	
-		remoteFilePath = "/upload/"+lkupfile_post_trade
+    cnopts = pysftp.CnOpts()
+    cnopts.hostkeys = None
+  # Define the file that you want to download from the remote directory
+    print(lkupfile_post_trade)
+    with pysftp.Connection(host=ftpHost, username=ftpUsername, password=ftpPassword,cnopts=cnopts) as sftp:	
+	remoteFilePath = "/upload/"+lkupfile_post_trade
     	# Define the local path where the file will be saved
-		localFilePath = lkupfile_post_trade
-		sftp.get(remoteFilePath, localFilePath)
+	localFilePath = lkupfile_post_trade
+	sftp.get(remoteFilePath, localFilePath)
 
 def explicit():
     from google.cloud import storage
